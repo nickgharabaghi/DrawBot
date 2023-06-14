@@ -118,8 +118,8 @@ def find_next_step(working_maze, current_row, current_col, order_of_dirs, prev_d
     current_dir_index = order_of_dirs.index(prev_direction)
     
     while True: # keep trying until you have a direction that gets you where you need to be
-        # if random.randint(0, 100) == 10:
-        #     mpimg.imsave("WorkingMaze.bmp", working_maze)
+#         if random.randint(0, 100) == 10:
+#             mpimg.imsave("WorkingMaze.bmp", working_maze)
         try_row_step, try_col_step = get_steps_from_dir(order_of_dirs[current_dir_index])
         if working_maze[current_row + try_row_step, current_col + try_col_step] == empty_space_val:
             next_row = current_row + try_row_step
@@ -136,8 +136,8 @@ def find_next_step(working_maze, current_row, current_col, order_of_dirs, prev_d
 
 # Directory and filename for maze:
 filename_base = r'C:\Users\nickg\Desktop\Side Projects\DrawBot\DrawBot\Test images\\' # Need a double backslash here to work properly with the apostrophe
-maze_filename = 'Hand-Drawn Maze.jpg' 
-image_is_hand_drawn = True # Hand-drawn or digital?
+maze_filename = 'maze2.jpg' 
+image_is_hand_drawn = False # Hand-drawn or digital?
 # maze_filename = 'Hand-Drawn Maze.jpg'
 
 # Defining where maze starts/ends:
@@ -173,14 +173,22 @@ if __name__ == "__main__":
     simplified_maze = cut_out_central_pixels(clean_maze, empty_space_val, extra_empty_pix_val)
     mpimg.imsave("SimpleMaze.bmp", simplified_maze)
     
-    working_maze = simplified_maze
+    working_maze = simplified_maze # the maze that will be mod
+    
+    # Keeping track of the path:
+    path_tracker_rows = []
+    path_tracker_cols = []
+    
     
     # Find starting pixel:
     if (start_side == 'top') and (end_side == 'bottom'):
         start_pix_col = find_start_point(simplified_maze, empty_space_val, wall_to_hug)
         working_maze[0, start_pix_col] = path_pix_value
-#         mpimg.imsave("WorkingMaze.bmp", working_maze)
-    
+        
+        # Add to path tracker:
+        path_tracker_rows.append(0)
+        path_tracker_cols.append(start_pix_col)
+
         # Calculate where we should end up:
         end_row = np.shape(working_maze)
 
@@ -193,6 +201,9 @@ if __name__ == "__main__":
             # Find next pixel in path:
             try:
                 next_row, next_col = find_next_step(working_maze, current_row, current_col, order_of_dirs, prev_direction, empty_space_val)
+                # Add to path tracker:
+                path_tracker_rows.append(next_row)
+                path_tracker_cols.append(next_col)
             except TypeError:
                 break
             # Prepare for next iteration:
@@ -204,3 +215,15 @@ if __name__ == "__main__":
     mpimg.imsave("SolvedMaze.bmp", solved_maze)
     solved_maze_plot = plt.imshow(solved_maze) 
     plt.show()
+    
+    
+    # Recreating a path from the stored indices of the path:
+    unoptimized_path = np.zeros(np.shape(solved_maze))
+    for iloop in range(0, len(path_tracker_rows)):
+        unoptimized_path[path_tracker_rows[iloop], path_tracker_cols[iloop]] = 1
+    mpimg.imsave("UnoptimizedPath.bmp", unoptimized_path)
+    unoptimized_path_plot = plt.imshow(unoptimized_path) 
+    plt.show()
+    
+
+        
