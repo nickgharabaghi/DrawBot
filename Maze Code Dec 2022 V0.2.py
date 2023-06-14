@@ -135,7 +135,11 @@ def find_next_step(working_maze, current_row, current_col, order_of_dirs, prev_d
 # ==== Defining constants/parameters/filenames: ====
 
 # Directory and filename for maze:
+<<<<<<< Updated upstream
 filename_base = r'C:\Users\nickg\Desktop\Side Projects\DrawBot\DrawBot\Test images\\' # Need a double backslash here to work properly with the apostrophe
+=======
+filename_base = r'D:\Documents\Nick Project\DrawBot\Test images\\' # Need a double backslash here to work properly with the apostrophe
+>>>>>>> Stashed changes
 maze_filename = 'Hand-Drawn Maze.jpg' 
 image_is_hand_drawn = True # Hand-drawn or digital?
 # maze_filename = 'Hand-Drawn Maze.jpg'
