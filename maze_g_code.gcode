@@ -1,0 +1,6 @@
+G28 
+G0 F100 X0 Y0
+M4 
+ayyyy 
+M5 
+M84 X Y 
